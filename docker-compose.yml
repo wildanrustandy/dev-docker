@@ -21,7 +21,7 @@ services:
       - "${ODOO_DATA_DIR}:/var/lib/odoo"
       - ./config/odoo.conf:/etc/odoo/odoo.conf
       - ./logs:/var/log/odoo
-    command: ./odoo-bin -c /etc/odoo/odoo.conf --dev=xml
+    command: ./odoo-bin -c /etc/odoo/odoo.conf --addons-path=${ODOO_ADDONS} --dev=xml
     profiles: ["normal"]
 
   odoo-debug:
@@ -37,7 +37,7 @@ services:
       - "${ODOO_DATA_DIR}:/var/lib/odoo"
       - ./config/odoo.conf:/etc/odoo/odoo.conf
       - ./logs:/var/log/odoo
-    command: python3 -m debugpy --listen 0.0.0.0:5678 --wait-for-client ./odoo-bin -c /etc/odoo/odoo.conf --dev=xml
+    command: python3 -m debugpy --listen 0.0.0.0:5678 --wait-for-client ./odoo-bin -c /etc/odoo/odoo.conf --addons-path=${ODOO_ADDONS} --dev=xml
     profiles: ["debug"]
 
 volumes:
