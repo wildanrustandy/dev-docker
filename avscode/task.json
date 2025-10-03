@@ -1,0 +1,26 @@
+// ini adalah contoh file task.json untuk menjalankan debugger vscode dengan docker
+// copy file ini ke dalam folder .vscode di dalam workspace, contoh: equip/.vscode/task.json
+
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "docker-compose-up-debug",
+            "type": "shell",
+            "command": "docker-compose --profile debug up --build --detach",
+            "options": {
+                "cwd": "${workspaceFolder}/../dev-docker"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "docker-compose-down",
+            "type": "shell",
+            "command": "docker-compose --profile debug down",
+            "options": {
+                "cwd": "${workspaceFolder}/../dev-docker"
+            },
+            "problemMatcher": []
+        }
+    ]
+}

@@ -1,0 +1,26 @@
+// ini adalah contoh launch.json untuk menghubungkan debugger VSCode ke Odoo yang berjalan di dalam Docker
+// copy file ini ke dalam folder .vscode di project, contoh: equip/.vscode/launch.json
+
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Attach to Odoo Docker",
+            "type": "python",
+            "request": "attach",
+            "justMyCode": false,
+            "connect": {
+                "host": "localhost",
+                "port": 5678
+            },
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}",
+                    "remoteRoot": "/opt/odoo"
+                }
+            ],
+            "preLaunchTask": "docker-compose-up-debug",
+            "postDebugTask": "docker-compose-down"
+        }
+    ]
+}

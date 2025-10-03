@@ -22,6 +22,23 @@ services:
       - ./config/odoo.conf:/etc/odoo/odoo.conf
       - ./logs:/var/log/odoo
     command: ./odoo-bin -c /etc/odoo/odoo.conf --dev=xml
+    profiles: ["normal"]
+
+  odoo-debug:
+    build: .
+    platform: linux/arm64
+    depends_on:
+      - db
+    ports:
+      - "${ODOO_PORT}:8069"
+      - "5678:5678"
+    volumes:
+      - ${ODOO_PATH}:/opt/odoo
+      - "${ODOO_DATA_DIR}:/var/lib/odoo"
+      - ./config/odoo.conf:/etc/odoo/odoo.conf
+      - ./logs:/var/log/odoo
+    command: python3 -m debugpy --listen 0.0.0.0:5678 --wait-for-client ./odoo-bin -c /etc/odoo/odoo.conf --dev=xml
+    profiles: ["debug"]
 
 volumes:
   db-data:
