@@ -21,7 +21,7 @@ services:
       - "${ODOO_DATA_DIR}:/var/lib/odoo"
       - ./config/odoo.conf:/etc/odoo/odoo.conf
       - ./logs:/var/log/odoo
-    command: ./odoo-bin -c /etc/odoo/odoo.conf
+    command: ./odoo-bin -c /etc/odoo/odoo.conf --dev=xml
 
 volumes:
   db-data:
