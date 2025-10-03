@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres:13
+    platform: linux/arm64
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  odoo:
+    build: .
+    platform: linux/arm64
+    depends_on:
+      - db
+    ports:
+      - "${ODOO_PORT}:8069"
+    volumes:
+      - ${ODOO_PATH}:/opt/odoo
+      - "${ODOO_DATA_DIR}:/var/lib/odoo"
+      - ./config/odoo.conf:/etc/odoo/odoo.conf
+      - ./logs:/var/log/odoo
+    command: ./odoo-bin -c /etc/odoo/odoo.conf
+
+volumes:
+  db-data:

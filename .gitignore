@@ -1,0 +1,25 @@
+# Logs
+logs/
+*.log
+
+# Environment variables
+.env
+
+# Database data (if using volume for db-data)
+**/db-data/
+
+# Odoo data directory (if you want to exclude it from git)
+**/data_dir/
+
+# Local configuration files
+config/odoo.local.conf
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
