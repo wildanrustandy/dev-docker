@@ -21,7 +21,7 @@ services:
       - "${ODOO_DATA_DIR}:/var/lib/odoo"
       - ./config/odoo.conf:/etc/odoo/odoo.conf
       - ./logs:/var/log/odoo
-    command: ./odoo-bin -c /etc/odoo/odoo.conf --addons-path=${ODOO_ADDONS} --dev=xml
+    command: ./odoo-bin -c /etc/odoo/odoo.conf --addons-path=${ODOO_ADDONS} --db-filter=${ODOO_DB_FILTER} --dev=xml 
     profiles: ["normal"]
 
   odoo-debug:

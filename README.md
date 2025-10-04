@@ -62,21 +62,131 @@ make equip_prj   # Switch to equip_prj environment
 
 ## Using Shell Functions for Global Access
 
-You can also add a shell function to your `~/.zshrc` or `~/.bashrc` to access environment switching from anywhere:
+You can also add shell functions to your `~/.zshrc` or `~/.bashrc` to access environment switching and database management from anywhere:
 
 ```bash
-# Tambahkan ke ~/.zshrc atau ~/.bashrc
+# Environment switching function
 dev_env() {
     cd /Users/wildanrustandy/Dev/dev-docker && ./switch_env.sh "$1"
 }
 
-# Contoh penggunaan dari mana saja:
-#   dev_env odoo14
-#   dev_env equip
-#   dev_env equip_prj
+# Database management functions
+dev_db_create() {
+    cd /Users/wildanrustandy/Dev/dev-docker && make db-create DBNAME="$1"
+}
+
+dev_db_drop() {
+    cd /Users/wildanrustandy/Dev/dev-docker && make db-drop DBNAME="$1"
+}
+
+dev_db_list() {
+    cd /Users/wildanrustandy/Dev/dev-docker && make db-list
+}
+
+dev_db_restore() {
+    cd /Users/wildanrustandy/Dev/dev-docker && make db-restore DBNAME="$1" FILE="$2"
+}
+
+# Alternative functions using the db_manager.sh script
+dev_db_create_alt() {
+    cd /Users/wildanrustandy/Dev/dev-docker && ./db_manager.sh create "$1"
+}
+
+dev_db_drop_alt() {
+    cd /Users/wildanrustandy/Dev/dev-docker && ./db_manager.sh drop "$1"
+}
+
+dev_db_list_alt() {
+    cd /Users/wildanrustandy/Dev/dev-docker && ./db_manager.sh list
+}
+
+dev_db_restore_alt() {
+    cd /Users/wildanrustandy/Dev/dev-docker && ./db_manager.sh restore "$1" "$2"
+}
 ```
 
-After adding this function and restarting your shell (or running `source ~/.zshrc`), you can switch environments from any directory.
+After adding these functions and restarting your shell (or running `source ~/.zshrc`), you can use:
+
+```bash
+# Environment switching from anywhere (these will change directory):
+dev_env odoo14      # Switch to odoo14 environment
+dev_env equip       # Switch to equip environment
+dev_env equip_prj   # Switch to equip_prj environment
+
+# Database management from anywhere (no directory change required):
+dev_db_create 'MY_DATABASE'
+dev_db_drop 'MY_DATABASE'
+dev_db_list
+dev_db_restore 'MY_DATABASE' '/path/to/backup.sql'
+```
+
+**Important:** For the most convenient database management from anywhere, use the universal `dev_db` function:
+
+```bash
+# Add this single function to your ~/.zshrc or ~/.bashrc:
+dev_db() { /Users/wildanrustandy/Dev/dev-docker/db_manager.sh "$@"; }
+
+# Then you can use from anywhere:
+dev_db create 'MY_DATABASE'
+dev_db drop 'MY_DATABASE'
+dev_db list
+dev_db restore 'MY_DATABASE' '/path/to/backup.sql'
+```
+
+## Database Management
+
+This project includes convenient tools for database management:
+
+### Using Makefile Commands
+
+```bash
+# Create a new database
+make db-create DBNAME='MY_DATABASE'
+
+# Drop (delete) a database
+make db-drop DBNAME='MY_DATABASE'
+
+# List all databases
+make db-list
+
+# Restore a database from SQL file
+make db-restore DBNAME='MY_DATABASE' FILE='/path/to/backup.sql'
+```
+
+### Using the Database Manager Script
+
+```bash
+# Create a new database
+./db_manager.sh create 'MY_DATABASE'
+
+# Drop (delete) a database
+./db_manager.sh drop 'MY_DATABASE'
+
+# List all databases
+./db_manager.sh list
+
+# Backup a database (to host file system)
+./db_manager.sh backup 'MY_DATABASE' '/path/to/backup.sql'
+
+# Restore a database from SQL file
+./db_manager.sh restore 'MY_DATABASE' '/path/to/backup.sql'
+```
+
+### Direct Docker Commands
+
+```bash
+# Create a database
+docker exec -it dev-docker-db-1 psql -U odoo -d postgres -c "CREATE DATABASE \"MY_DATABASE\";"
+
+# Drop a database
+docker exec -it dev-docker-db-1 psql -U odoo -d postgres -c "DROP DATABASE \"MY_DATABASE\";"
+
+# List all databases
+docker exec -it dev-docker-db-1 psql -U odoo -d postgres -c "\l"
+
+# Restore from SQL file
+docker exec -i dev-docker-db-1 psql -U odoo -d "MY_DATABASE" < /path/to/backup.sql
+```
 
 ## Usage
 
