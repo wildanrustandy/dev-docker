@@ -10,14 +10,53 @@ This repository contains a Docker-based development environment for Odoo, with P
 ## Setup
 
 1. Clone this repository
-2. Copy `.env.example` to `.env` and customize the values for your environment:
+2. Copy `.env.example` to `.env` and customize the values for your environment, or use the environment switching script or Makefile (recommended):
    ```bash
+   # Option 1: Manual copy
    cp .env.example .env
+   
+   # Option 2: Use the switching script (recommended)
+   ./switch_env.sh equip        # For equip project
+   ./switch_env.sh odoo14       # For odoo14 project
+   ./switch_env.sh equip_prj    # For equip_prj project
+   
+   # Option 3: Use the Makefile (alternative method)
+   make equip                   # For equip project
+   make odoo14                  # For odoo14 project
+   make equip_prj               # For equip_prj project
    ```
 3. Update the `.env` file with your specific paths and settings
 4. Ensure your Odoo source code is available at the path specified in `.env` (default is `/Users/wildanrustandy/dev/equip`)
 
 > Note: The `.env` file is ignored by git for security purposes. Use `.env.example` as a template for setting up your own `.env` file.
+
+## Environment Switching
+
+This project includes convenient tools to switch between different environments:
+
+- `switch_env.sh` - A shell script for switching between environment configurations
+- `Makefile` - Provides make commands for environment switching
+
+To see all available environments:
+```bash
+./switch_env.sh list
+# or
+make list-envs
+```
+
+To see the current environment:
+```bash
+./switch_env.sh show
+# or
+make show-env
+```
+
+To switch environments using Makefile:
+```bash
+make equip       # Switch to equip environment
+make odoo14      # Switch to odoo14 environment
+make equip_prj   # Switch to equip_prj environment
+```
 
 ## Usage
 
@@ -167,9 +206,9 @@ The `./config/odoo.conf` file contains the Odoo configuration:
 In Odoo 14, database filtering is configured in `config/odoo.conf` using the `dbfilter` parameter. 
 The value is a regular expression that determines which databases the Odoo instance will access.
 Examples:
-- `^odoo14$` - Only match database named exactly "odoo14"
-- `^DEV$` - Only match database named exactly "DEV"  
-- `^%h$` - Match databases based on HTTP hostname
+- `^odoo14 - Only match database named exactly "odoo14"
+- `^DEV - Only match database named exactly "DEV"  
+- `^%h - Match databases based on HTTP hostname
 - `.*` - Match all databases
 
 The filter pattern in `ODOO_DB_FILTER` from the `.env` file should be manually copied to the 
@@ -177,12 +216,12 @@ The filter pattern in `ODOO_DB_FILTER` from the `.env` file should be manually c
 
 ### Example Environment Files
 
-This repository includes example environment files for different setups:
-- `.env.example.odoo14` - Configuration for odoo14 environment
-- `.env.example.equip` - Configuration for equip environment
-- `.env.example.equip_prj` - Configuration for equip_prj environment
+This repository includes example environment files for different setups, organized in the `env-sample/` directory:
+- `env-sample/.env.example.odoo14` - Configuration for odoo14 environment
+- `env-sample/.env.example.equip` - Configuration for equip environment
+- `env-sample/.env.example.equip_prj` - Configuration for equip_prj environment
 
-To set up your environment, copy the appropriate example file to `.env` and modify as needed.
+To set up your environment, use the switching script or copy the appropriate example file to `.env` and modify as needed.
 
 ## Troubleshooting
 
