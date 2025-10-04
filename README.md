@@ -37,6 +37,8 @@ This project includes convenient tools to switch between different environments:
 - `switch_env.sh` - A shell script for switching between environment configurations
 - `Makefile` - Provides make commands for environment switching
 
+Environment template files are stored in the `env-template/` directory with the naming pattern `.env.template.{project-name}`.
+
 To see all available environments:
 ```bash
 ./switch_env.sh list
@@ -57,6 +59,24 @@ make equip       # Switch to equip environment
 make odoo14      # Switch to odoo14 environment
 make equip_prj   # Switch to equip_prj environment
 ```
+
+## Using Shell Functions for Global Access
+
+You can also add a shell function to your `~/.zshrc` or `~/.bashrc` to access environment switching from anywhere:
+
+```bash
+# Tambahkan ke ~/.zshrc atau ~/.bashrc
+dev_env() {
+    cd /Users/wildanrustandy/Dev/dev-docker && ./switch_env.sh "$1"
+}
+
+# Contoh penggunaan dari mana saja:
+#   dev_env odoo14
+#   dev_env equip
+#   dev_env equip_prj
+```
+
+After adding this function and restarting your shell (or running `source ~/.zshrc`), you can switch environments from any directory.
 
 ## Usage
 
@@ -214,14 +234,14 @@ Examples:
 The filter pattern in `ODOO_DB_FILTER` from the `.env` file should be manually copied to the 
 `dbfilter` parameter in `config/odoo.conf` to ensure proper database filtering.
 
-### Example Environment Files
+### Environment Template Files
 
-This repository includes example environment files for different setups, organized in the `env-sample/` directory:
-- `env-sample/.env.example.odoo14` - Configuration for odoo14 environment
-- `env-sample/.env.example.equip` - Configuration for equip environment
-- `env-sample/.env.example.equip_prj` - Configuration for equip_prj environment
+This repository includes template environment files for different setups, organized in the `env-template/` directory:
+- `env-template/.env.template.odoo14` - Configuration for odoo14 environment
+- `env-template/.env.template.equip` - Configuration for equip environment
+- `env-template/.env.template.equip_prj` - Configuration for equip_prj environment
 
-To set up your environment, use the switching script or copy the appropriate example file to `.env` and modify as needed.
+To set up your environment, use the switching script or copy the appropriate template file to `.env` and modify as needed.
 
 ## Troubleshooting
 

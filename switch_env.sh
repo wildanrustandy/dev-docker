@@ -4,7 +4,7 @@
 
 # Get the script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ENV_SAMPLE_DIR="$SCRIPT_DIR/env-sample"
+ENV_TEMPLATE_DIR="$SCRIPT_DIR/env-template"
 
 # Function to display usage
 usage() {
@@ -24,13 +24,13 @@ usage() {
 # Function to list available environment files
 list_envs() {
     echo "Available environment files:"
-    for file in "$ENV_SAMPLE_DIR"/.env.example.*; do
+    for file in "$ENV_TEMPLATE_DIR"/.env.template.*; do
         if [ -f "$file" ]; then
-            env_name=$(basename "$file" | sed 's/\.env\.example\.//')
+            env_name=$(basename "$file" | sed 's/\.env\.template\.//')
             if [ -f "$SCRIPT_DIR/.env" ] && diff -q "$file" "$SCRIPT_DIR/.env" >/dev/null 2>&1; then
-                echo "  * $env_name (active) [from $ENV_SAMPLE_DIR]"
+                echo "  * $env_name (active) [from $ENV_TEMPLATE_DIR]"
             else
-                echo "    $env_name [from $ENV_SAMPLE_DIR]"
+                echo "    $env_name [from $ENV_TEMPLATE_DIR]"
             fi
         fi
     done
@@ -40,14 +40,14 @@ list_envs() {
 show_current() {
     if [ -f "$SCRIPT_DIR/.env" ]; then
         # Try to identify which environment is currently active
-        for file in "$ENV_SAMPLE_DIR"/.env.example.*; do
+        for file in "$ENV_TEMPLATE_DIR"/.env.template.*; do
             if [ -f "$file" ] && diff -q "$file" "$SCRIPT_DIR/.env" >/dev/null 2>&1; then
-                env_name=$(basename "$file" | sed 's/\.env\.example\.//')
-                echo "Current environment: $env_name [from $ENV_SAMPLE_DIR]"
+                env_name=$(basename "$file" | sed 's/\.env\.template\.//')
+                echo "Current environment: $env_name [from $ENV_TEMPLATE_DIR]"
                 return
             fi
         done
-        echo "Current environment: custom (not matching any example file)"
+        echo "Current environment: custom (not matching any template file)"
     else
         echo "Current environment: none (.env file does not exist)"
     fi
@@ -69,7 +69,7 @@ case "$ENV_NAME" in
         show_current
         ;;
     equip|odoo14|equip_prj)
-        ENV_FILE="$ENV_SAMPLE_DIR/.env.example.$ENV_NAME"
+        ENV_FILE="$ENV_TEMPLATE_DIR/.env.template.$ENV_NAME"
         
         if [ ! -f "$ENV_FILE" ]; then
             echo "Error: Environment file $ENV_FILE does not exist"
@@ -78,7 +78,7 @@ case "$ENV_NAME" in
             exit 1
         fi
         
-        # Copy the example file to .env
+        # Copy the template file to .env
         cp "$ENV_FILE" "$SCRIPT_DIR/.env"
         echo "Switched to $ENV_NAME environment"
         echo "Environment file copied from $ENV_FILE to $SCRIPT_DIR/.env"
