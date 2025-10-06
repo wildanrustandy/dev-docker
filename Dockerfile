@@ -28,6 +28,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     tcl \
     && rm -rf /var/lib/apt/lists/*
 
+# Install wkhtmltopdf for PDF generation (Debian Bullseye compatible version)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    wkhtmltopdf \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install debugpy
 RUN pip install --no-cache-dir debugpy
 
