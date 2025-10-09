@@ -1,0 +1,36 @@
+#================================================================================
+# Tambahkan ke ~/.zshrc atau ~/.bashrc untuk mengakses perintah dari mana saja
+#================================================================================
+
+# Fungsi untuk berpindah environment (akan mengarahkan ke direktori dev-docker)
+dev_env() {
+    cd /Users/wildanrustandy/Dev/dev-docker && ./scripts/switch_env.sh "$1"
+}
+
+# Fungsi untuk manajemen database (dapat digunakan dari mana saja)
+dev_db() {
+    /Users/wildanrustandy/Dev/dev-docker/scripts/db_manager.sh "$@"
+}
+
+#================================================================================
+# Cara Penggunaan:
+#================================================================================
+
+# 1. Pindah Environment:
+#   dev_env odoo14
+#   dev_env equip
+#   dev_env equip_prj
+
+# 2. Manajemen Database:
+#   dev_db create 'NAMA_DATABASE'           # Membuat database
+#   dev_db drop 'NAMA_DATABASE'             # Menghapus database
+#   dev_db list                             # Melihat semua database
+#   dev_db backup 'NAMA_DATABASE' 'path/to/backup.sql' # Backup database
+#   dev_db restore 'NAMA_DATABASE' 'path/to/backup.sql'  # Restore database
+
+#================================================================================
+# Setelah menambahkan fungsi di atas ke ~/.zshrc atau ~/.bashrc, jalankan:
+#   source ~/.zshrc
+# atau
+#   source ~/.bashrc
+#================================================================================

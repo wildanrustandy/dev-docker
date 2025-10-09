@@ -26,7 +26,7 @@ help:
 # Switch to equip environment
 equip:
 	@echo "Switching to equip environment..."
-	@./switch_env.sh equip
+	@./scripts/switch_env.sh equip
 
 # Switch to odoo14 environment
 odoo14:

@@ -10,15 +10,15 @@ This repository contains a Docker-based development environment for Odoo, with P
 ## Setup
 
 1. Clone this repository
-2. Copy `.env.example` to `.env` and customize the values for your environment, or use the environment switching script or Makefile (recommended):
+2. Copy one of the environment files from the `envs` directory to `.env` and customize the values for your environment, or use the environment switching script or Makefile (recommended):
    ```bash
    # Option 1: Manual copy
-   cp .env.example .env
+   cp envs/equip.env .env
    
    # Option 2: Use the switching script (recommended)
-   ./switch_env.sh equip        # For equip project
-   ./switch_env.sh odoo14       # For odoo14 project
-   ./switch_env.sh equip_prj    # For equip_prj project
+   ./scripts/switch_env.sh equip        # For equip project
+   ./scripts/switch_env.sh odoo14       # For odoo14 project
+   ./scripts/switch_env.sh equip_prj    # For equip_prj project
    
    # Option 3: Use the Makefile (alternative method)
    make equip                   # For equip project
@@ -28,27 +28,27 @@ This repository contains a Docker-based development environment for Odoo, with P
 3. Update the `.env` file with your specific paths and settings
 4. Ensure your Odoo source code is available at the path specified in `.env` (default is `/Users/wildanrustandy/dev/equip`)
 
-> Note: The `.env` file is ignored by git for security purposes. Use `.env.example` as a template for setting up your own `.env` file.
+> Note: The `.env` file is ignored by git for security purposes. Use the files in the `envs` directory as templates for setting up your own `.env` file.
 
 ## Environment Switching
 
 This project includes convenient tools to switch between different environments:
 
-- `switch_env.sh` - A shell script for switching between environment configurations
+- `scripts/switch_env.sh` - A shell script for switching between environment configurations
 - `Makefile` - Provides make commands for environment switching
 
-Environment template files are stored in the `env-template/` directory with the naming pattern `.env.template.{project-name}`.
+Environment template files are stored in the `envs/` directory with the naming pattern `{project-name}.env`.
 
 To see all available environments:
 ```bash
-./switch_env.sh list
+./scripts/switch_env.sh list
 # or
 make list-envs
 ```
 
 To see the current environment:
 ```bash
-./switch_env.sh show
+./scripts/switch_env.sh show
 # or
 make show-env
 ```
@@ -67,7 +67,7 @@ You can also add shell functions to your `~/.zshrc` or `~/.bashrc` to access env
 ```bash
 # Environment switching function
 dev_env() {
-    cd /Users/wildanrustandy/Dev/dev-docker && ./switch_env.sh "$1"
+    cd /Users/wildanrustandy/Dev/dev-docker && ./scripts/switch_env.sh "$1"
 }
 
 # Database management functions
@@ -89,19 +89,19 @@ dev_db_restore() {
 
 # Alternative functions using the db_manager.sh script
 dev_db_create_alt() {
-    cd /Users/wildanrustandy/Dev/dev-docker && ./db_manager.sh create "$1"
+    cd /Users/wildanrustandy/Dev/dev-docker && ./scripts/db_manager.sh create "$1"
 }
 
 dev_db_drop_alt() {
-    cd /Users/wildanrustandy/Dev/dev-docker && ./db_manager.sh drop "$1"
+    cd /Users/wildanrustandy/Dev/dev-docker && ./scripts/db_manager.sh drop "$1"
 }
 
 dev_db_list_alt() {
-    cd /Users/wildanrustandy/Dev/dev-docker && ./db_manager.sh list
+    cd /Users/wildanrustandy/Dev/dev-docker && ./scripts/db_manager.sh list
 }
 
 dev_db_restore_alt() {
-    cd /Users/wildanrustandy/Dev/dev-docker && ./db_manager.sh restore "$1" "$2"
+    cd /Users/wildanrustandy/Dev/dev-docker && ./scripts/db_manager.sh restore "$1" "$2"
 }
 ```
 
@@ -124,7 +124,7 @@ dev_db_restore 'MY_DATABASE' '/path/to/backup.sql'
 
 ```bash
 # Add this single function to your ~/.zshrc or ~/.bashrc:
-dev_db() { /Users/wildanrustandy/Dev/dev-docker/db_manager.sh "$@"; }
+dev_db() { /Users/wildanrustandy/Dev/dev-docker/scripts/db_manager.sh "$@"; }
 
 # Then you can use from anywhere:
 dev_db create 'MY_DATABASE'
@@ -157,19 +157,19 @@ make db-restore DBNAME='MY_DATABASE' FILE='/path/to/backup.sql'
 
 ```bash
 # Create a new database
-./db_manager.sh create 'MY_DATABASE'
+./scripts/db_manager.sh create 'MY_DATABASE'
 
 # Drop (delete) a database
-./db_manager.sh drop 'MY_DATABASE'
+./scripts/db_manager.sh drop 'MY_DATABASE'
 
 # List all databases
-./db_manager.sh list
+./scripts/db_manager.sh list
 
 # Backup a database (to host file system)
-./db_manager.sh backup 'MY_DATABASE' '/path/to/backup.sql'
+./scripts/db_manager.sh backup 'MY_DATABASE' '/path/to/backup.sql'
 
 # Restore a database from SQL file
-./db_manager.sh restore 'MY_DATABASE' '/path/to/backup.sql'
+./scripts/db_manager.sh restore 'MY_DATABASE' '/path/to/backup.sql'
 ```
 
 ### Direct Docker Commands
@@ -346,10 +346,10 @@ The filter pattern in `ODOO_DB_FILTER` from the `.env` file should be manually c
 
 ### Environment Template Files
 
-This repository includes template environment files for different setups, organized in the `env-template/` directory:
-- `env-template/.env.template.odoo14` - Configuration for odoo14 environment
-- `env-template/.env.template.equip` - Configuration for equip environment
-- `env-template/.env.template.equip_prj` - Configuration for equip_prj environment
+This repository includes template environment files for different setups, organized in the `envs/` directory:
+- `envs/odoo14.env` - Configuration for odoo14 environment
+- `envs/equip.env` - Configuration for equip environment
+- `envs/equip_prj.env` - Configuration for equip_prj environment
 
 To set up your environment, use the switching script or copy the appropriate template file to `.env` and modify as needed.
 
