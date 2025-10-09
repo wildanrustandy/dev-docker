@@ -19,11 +19,11 @@ services:
     ports:
       - "${ODOO_PORT}:8069"
     volumes:
-      - ${ODOO_PATH}:/opt/odoo
+      - ${ODOO_PATH}:${ODOO_PATH}
       - "${ODOO_DATA_DIR}:/var/lib/odoo"
       - ./config/odoo.conf:/etc/odoo/odoo.conf
       - ./logs:/var/log/odoo
-    command: ./odoo-bin -c /etc/odoo/odoo.conf --addons-path=${ODOO_ADDONS} --db-filter=${ODOO_DB_FILTER} --dev=xml 
+    command: bash -lc "cd ${ODOO_PATH} && ./odoo-bin -c /etc/odoo/odoo.conf --addons-path=${ODOO_ADDONS} --db-filter=${ODOO_DB_FILTER} --dev=xml"
     profiles: ["normal"]
 
   odoo-debug:
@@ -35,11 +35,11 @@ services:
       - "${ODOO_PORT}:8069"
       - "5678:5678"
     volumes:
-      - ${ODOO_PATH}:/opt/odoo
+      - ${ODOO_PATH}:${ODOO_PATH}
       - "${ODOO_DATA_DIR}:/var/lib/odoo"
       - ./config/odoo.conf:/etc/odoo/odoo.conf
       - ./logs:/var/log/odoo
-    command: python3 -m debugpy --listen 0.0.0.0:5678 --wait-for-client ./odoo-bin -c /etc/odoo/odoo.conf --addons-path=${ODOO_ADDONS} --dev=xml
+    command: bash -lc "cd ${ODOO_PATH} && python3 -m debugpy --listen 0.0.0.0:5678 --wait-for-client ./odoo-bin -c /etc/odoo/odoo.conf --addons-path=${ODOO_ADDONS} --dev=xml"
     profiles: ["debug"]
 
 volumes:
