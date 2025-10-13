@@ -16,11 +16,24 @@
             "pathMappings": [
                 {
                     "localRoot": "${workspaceFolder}",
-                    "remoteRoot": "/opt/odoo"
+                    "remoteRoot": "/Users/wildanrustandy/dev/equip"
                 }
             ],
             "preLaunchTask": "docker-compose-up-debug",
             "postDebugTask": "docker-compose-down"
+        },
+        {
+            "name": "Run Odoo Native",
+            "type": "debugpy",
+            "request": "launch",
+            "stopOnEntry": false,
+            "console": "integratedTerminal",
+            "python": "/Users/wildanrustandy/venv/venv/bin/python",
+            "program": "/Users/wildanrustandy/dev/equip/odoo-bin",
+            "args": [
+                "--config=/Users/wildanrustandy/config/odoo14_wms.conf",
+                "--dev=xml"
+            ]
         }
     ]
 }
